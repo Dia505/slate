@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:slate/login/login_screen.dart';
 import 'package:slate/navigation/navigation.dart';
@@ -19,7 +21,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
 
       case RegisterScreen.routeName:
-        return MaterialPageRoute(builder: (_) => const RegisterScreen());
+        return MaterialPageRoute(builder: (_) =>  const RegisterScreen());
 
       case NavigationScreen.routeName:
         return MaterialPageRoute(builder: (_) => const NavigationScreen());

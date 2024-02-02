@@ -2,6 +2,10 @@
 <!--    permission to use internet-->
 <!--    also can be used for permission to use camera, bluetooth, etc.-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permision.CAMERA" />
+    <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permision.READ_EXTERNAL_STORAGE" />
+
     <application
         android:label="slate"
         android:name="${applicationName}"

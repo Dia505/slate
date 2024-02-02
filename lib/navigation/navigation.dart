@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:slate/profile/profile_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -12,6 +16,37 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   PageController _controller = PageController(initialPage: 0);
   int currentIndex = 0;
+
+  File ? file;
+  String ? tempUrl;
+  //ImageSource denotes camera or gallery
+  void pickImage(ImageSource source) async{
+    var selected = await ImagePicker().pickImage(source: source, imageQuality: 100);
+
+    if(selected == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No image selected")));
+    }
+    else {
+      setState(() {
+        file = File(selected.path);
+      });
+      saveToStorage();
+    }
+  }
+
+  FirebaseStorage storage = FirebaseStorage.instance;
+  saveToStorage() async {
+    String filename = file!.path.split('/').last;
+    var photo = await storage
+        .ref()
+        .child("user")
+        .child(filename)
+        .putFile(File(file!.path));
+    String url = await photo.ref.getDownloadURL();
+    setState(() {
+      tempUrl = url;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +101,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 33.0),
-                          child: Image.asset("assets/images/plus.png"),
+                          child: InkWell(
+                              onTap: () {
+                                pickImage(ImageSource.gallery);
+                              },
+                              child: Image.asset("assets/images/plus.png")),
                         ),
                         Padding(
                             padding: const EdgeInsets.only(left: 30.0),
