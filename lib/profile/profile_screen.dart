@@ -29,22 +29,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _getCurrentUser();
-    _fetchUserPosts();
   }
 
   Future<void> _getCurrentUser() async {
     final preference = await SharedPreferences.getInstance();
-    setState(() {
-      userId = preference.getString("userId");
-    });
+    final fetchedUserId = preference.getString("userId");
 
-    if (userId != null) {
+    if (fetchedUserId != null) {
+      setState(() {
+        userId = fetchedUserId;
+      });
+
       UserViewModel userViewModel = Provider.of<UserViewModel>(context, listen: false);
       UserModel? userData = await userViewModel.fetchUserDataById(userId!);
 
       if (userData != null) {
         setState(() {
           _user = userData;
+          _fetchUserPosts();
         });
       }
     }
@@ -52,6 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _fetchUserPosts() async {
     try {
+      print("Fetching user posts for userId: $userId");
       await Provider.of<PostViewModel>(context, listen: false).fetchUserPosts();
     } catch (e) {
       print("Error fetching user posts: $e");
@@ -204,7 +207,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 0,
             child: Consumer<PostViewModel>(
               builder: (context, postViewModel, _) {
-                // Check if posts are available
                 if (postViewModel.userPosts.isEmpty) {
                   return const Center(
                     child: Text(
@@ -221,14 +223,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 0,
-                    mainAxisSpacing: 10,
+                    mainAxisSpacing: 20,
                   ),
                   itemBuilder: (context, index) {
                     PostModel post = postViewModel.userPosts[index];
-                    return Container(
-                      height: 115,
-                      width: 75,
-                      child: Image.network(post.postImage ?? ""),
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 120,
+                            child: Image.network(post.postImage ?? ""),
+                          ),
+
+                          SizedBox(height: 3),
+
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15.0),
+                            child: Container(
+                              width: 70,
+                              child: Text(
+                                post.title ?? "",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );

@@ -46,11 +46,18 @@ class PostRepo {
 
   Future<List<PostModel>> fetchPostsByUserId(String userId) async {
     try {
+      print("Fetching posts for userId: $userId");
       QuerySnapshot<PostModel> snapshot = await postRef
           .where('userId', isEqualTo: userId)
           .orderBy('timestamp', descending: true)
           .get();
-      return snapshot.docs.map((doc) => doc.data()!).toList();
+
+      print("Fetched ${snapshot.size} posts");
+
+      List<PostModel> posts = snapshot.docs.map((doc) => doc.data()!).toList();
+      print("Posts: $posts");
+
+      return posts;
     } catch (e) {
       print("Error getting user posts: $e");
       throw e;

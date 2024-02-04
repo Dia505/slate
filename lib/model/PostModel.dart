@@ -12,12 +12,14 @@ class PostModel {
   String title;
   String ? description;
   String userId;
+  Timestamp? timestamp;
 
   PostModel({
     required this.postImage,
     required this.title,
     this.description,
     required this.userId,
+    this.timestamp
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
@@ -25,6 +27,7 @@ class PostModel {
     title: json["title"],
     description: json["description"],
     userId: json["userId"],
+    timestamp: json["timestamp"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +35,7 @@ class PostModel {
     "title": title,
     "description": description,
     "userId": userId,
+    "timestamp": timestamp,
   };
 
   factory PostModel.fromFirebaseSnapshot(DocumentSnapshot<Map<String, dynamic>> json) => PostModel(
@@ -39,5 +43,6 @@ class PostModel {
     title: json["title"],
     description: json["description"],
     userId: json["userId"],
+    timestamp: json["timestamp"],
   );
 }

@@ -44,8 +44,10 @@ class PostViewModel with ChangeNotifier {
 
       if (user != null) {
         _userPosts = await _postRepo.fetchPostsByUserId(user.uid);
+        print("User Posts: $_userPosts");
         notifyListeners();
-      } else {
+      }
+      else {
         print("User is not logged in");
       }
     } catch (e) {

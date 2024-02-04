@@ -28,6 +28,7 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
   PostModel? _post;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -165,6 +166,10 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 padding: const EdgeInsets.only(top: 80.0, left: 200.0),
                 child: ElevatedButton(
                     onPressed: () async{
+                      setState(() {
+                        isLoading = true;
+                      });
+
                       await Provider.of<PostViewModel>(context, listen: false).uploadPost(
                           _titleController.text,
                           _descriptionController.text,
@@ -176,6 +181,11 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                         ),
                       );
                       Navigator.pushNamed(context, ProfileScreen.routeName);
+
+                      setState(() {
+                        isLoading = false;
+                      });
+
                     },
                     child: Text("Post",
                         style:
@@ -191,7 +201,18 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                         side: MaterialStateProperty.all<BorderSide>(
                             BorderSide(color: Colors.white)))
                 ),
-              )
+              ),
+
+              Visibility(
+                visible: isLoading,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
             ],
           )
         ],
