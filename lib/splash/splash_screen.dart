@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/login/login_screen.dart';
 import 'package:slate/navigation/navigation.dart';
+import 'package:slate/post/post_upload.dart';
 import 'package:slate/profile/profile_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:slate/register/register_screen.dart';

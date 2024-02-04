@@ -5,8 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/login/login_screen.dart';
+import 'package:slate/model/PostModel.dart';
 import 'package:slate/model/UserModel.dart';
 import 'package:slate/profile/edit_profile.dart';
+import 'package:slate/view_model/post_view_model.dart';
 import 'package:slate/view_model/user_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,16 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   UserModel? _user;
   String ? userId;
-  List<String> data = [
-    "assets/images/dali in the ocean.jpg",
-    "assets/images/dali in the ocean.jpg",
-    "assets/images/dali in the ocean.jpg"
-  ];
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+    _fetchUserPosts();
   }
 
   Future<void> _getCurrentUser() async {
@@ -49,6 +47,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _user = userData;
         });
       }
+    }
+  }
+
+  Future<void> _fetchUserPosts() async {
+    try {
+      await Provider.of<PostViewModel>(context, listen: false).fetchUserPosts();
+    } catch (e) {
+      print("Error fetching user posts: $e");
     }
   }
 
@@ -129,11 +135,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 40.0, left: 145.0),
                             child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage("assets/images/dali in the ocean.jpg"),
+                              backgroundImage: _user?.profileImage != null
+                                  ? NetworkImage(_user!.profileImage!)
+                                  : AssetImage("assets/images/profile.png") as ImageProvider,
                               radius: 60,
                             ),
                           ),
+
 
                           Padding(
                             padding: const EdgeInsets.only(left: 25.0, top: 40.0),
@@ -194,18 +202,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Container(
             height: 500,
             width: 0,
-            child: GridView.builder(
-                physics: const ScrollPhysics(),
-                itemCount: data.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            child: Consumer<PostViewModel>(
+              builder: (context, postViewModel, _) {
+                // Check if posts are available
+                if (postViewModel.userPosts.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "No posts available",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+
+                // Display user posts in GridView.builder
+                return GridView.builder(
+                  physics: const ScrollPhysics(),
+                  itemCount: postViewModel.userPosts.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 0,
-                    mainAxisSpacing: 10),
-                itemBuilder: (context, index) => Container(
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    PostModel post = postViewModel.userPosts[index];
+                    return Container(
                       height: 115,
                       width: 75,
-                      child: Image.asset(data[index]),
-                    )),
+                      child: Image.network(post.postImage ?? ""),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         )
       ]),

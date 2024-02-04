@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/model/UserModel.dart';
+import 'package:slate/view_model/user_view_model.dart';
 import 'package:slate/widget/common_text_field.dart';
 
 class EditProfile extends StatefulWidget {
@@ -19,6 +24,8 @@ class _EditProfileState extends State<EditProfile> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   UserModel? _user;
   String? userId;
+  File ? file;
+  String ? tempUrl;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -36,7 +43,6 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (userId != null) {
-      // Fetch additional user data from Firestore using UserModel
       DocumentSnapshot userSnapshot =
           await database.collection("User").doc(userId).get();
 
@@ -52,6 +58,50 @@ class _EditProfileState extends State<EditProfile> {
           _bioController.text = _user?.about ?? "";
         });
       }
+    }
+  }
+
+  void pickImage(ImageSource source) async{
+    var selected = await ImagePicker().pickImage(source: source, imageQuality: 100);
+
+    if(selected == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No image selected")));
+    }
+    else {
+      setState(() {
+        file = File(selected.path);
+      });
+      saveToStorage();
+    }
+  }
+
+  Future<void> saveToStorage() async {
+    final preference = await SharedPreferences.getInstance();
+    String? userId = preference.getString("userId") ?? "";
+
+    if (file == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("No image selected")));
+      return;
+    }
+
+    try {
+      // Call the uploadProfileImage method from UserViewModel
+      await Provider.of<UserViewModel>(context, listen: false)
+          .uploadProfileImage(userId, file!);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Profile image updated successfully'),
+        ),
+      );
+    } catch (e) {
+      print("Error saving profile image in ProfileScreen: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving profile image'),
+        ),
+      );
     }
   }
 
@@ -95,15 +145,18 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: const EdgeInsets.only(top: 40.0),
             child: CircleAvatar(
-              backgroundImage:
-                  AssetImage("assets/images/dali in the ocean.jpg"),
+              backgroundImage: _user?.profileImage != null
+                  ? NetworkImage(_user!.profileImage!)
+                  : AssetImage("assets/images/profile.png") as ImageProvider,
               radius: 60,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  pickImage(ImageSource.gallery);
+                },
                 child: Text("Edit",
                     style:
                         GoogleFonts.jura(textStyle: TextStyle(fontSize: 14))),

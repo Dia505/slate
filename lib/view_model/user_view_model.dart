@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/model/UserModel.dart';
@@ -59,6 +62,22 @@ class UserViewModel with ChangeNotifier {
     } catch (e) {
       print("Error fetching user data: $e");
       return null;
+    }
+  }
+
+  Future<void> uploadProfileImage(String userId, File file) async {
+    try {
+      Reference photoRef = await _userRepo.uploadProfileImage(userId, file);
+
+      String url = await photoRef.getDownloadURL();
+
+      // Save the profile image URL to the database
+      await _userRepo.saveProfileImage(userId, url);
+
+      notifyListeners();
+    } catch (e) {
+      print("Error uploading profile image in view model: $e");
+      throw e;
     }
   }
 }

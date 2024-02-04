@@ -16,7 +16,8 @@ class UserModel {
   String ? about;
   String password;
   String ? username;
-  String ? image;
+  String ? profileImage;
+
 
   UserModel({
     required this.email,
@@ -24,7 +25,7 @@ class UserModel {
     this.fullname,
     required this.password,
     this.username,
-    this.image
+    this.profileImage
   });
 
 
@@ -34,7 +35,7 @@ class UserModel {
     password: json["password"],
     about: json["bio"] ?? null,
     username: json["username"],
-    image: json["image"]
+      profileImage: json["image"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -43,16 +44,14 @@ class UserModel {
     "about": about ?? null,
     "password": password,
     "username": username,
-    "image": image
+    "image": profileImage
   };
 
   factory UserModel.fromFirebaseSnapshot(DocumentSnapshot<Map<String, dynamic>> json) => UserModel(
     fullname: json["name"],
     username: json["username"],
     about: json["about"],
-    image: json["image"],
-    // imageUrl: json["imageUrl"],
-    // imagePath: json["imagePath"],
+    profileImage: json["image"],
     email: json["email"],
     password: json["password"],
   );

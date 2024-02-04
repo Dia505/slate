@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:slate/login/login_screen.dart';
 import 'package:slate/navigation/navigation.dart';
+import 'package:slate/post/post_upload.dart';
 import 'package:slate/profile/edit_profile.dart';
 import 'package:slate/splash/splash_screen.dart';
 import 'package:slate/register/register_screen.dart';
@@ -31,6 +32,10 @@ class RouteGenerator {
 
       case EditProfile.routeName:
         return MaterialPageRoute(builder: (_) => const EditProfile());
+
+      case PostUploadScreen.routeName:
+        final File? imageFile = settings.arguments as File?;
+        return MaterialPageRoute(builder: (_) => PostUploadScreen(imageFile: imageFile));
 
       default:
         _onPageNotFound();
