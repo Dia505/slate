@@ -133,7 +133,6 @@ class _EditProfileState extends State<EditProfile> {
                 child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      // Navigator.p(context, ProfileScreen.routeName);
                     },
                     child: Image.asset(
                       "assets/images/cross.png",

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/login/login_screen.dart';
 import 'package:slate/model/PostModel.dart';
 import 'package:slate/model/UserModel.dart';
+import 'package:slate/post/post_view.dart';
 import 'package:slate/profile/edit_profile.dart';
 import 'package:slate/view_model/post_view_model.dart';
 import 'package:slate/view_model/user_view_model.dart';
@@ -65,46 +66,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(children: [
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 10.0),
-              child: Image.asset(
-                "assets/images/slate logo.png",
-                height: 35,
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0, right: 10.0),
+                child: Image.asset(
+                  "assets/images/slate logo.png",
+                  height: 35,
+                ),
               ),
-            ),
-            Text("SLATE",
-                style: GoogleFonts.jura(
-                    textStyle: TextStyle(color: Colors.white, fontSize: 24))),
-            Padding(
-              padding: const EdgeInsets.only(left: 170.0),
-              child: ElevatedButton(
-                  onPressed: () async{
-                    final preference = await SharedPreferences.getInstance();
-                    preference.clear();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('You have logged out'),
-                      ),
-                    );
-                    Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-                  },
-                  child: Text("Logout",
-                      style:
-                          GoogleFonts.jura(textStyle: TextStyle(fontSize: 12))),
-                  style: ButtonStyle(
-                      fixedSize:
-                          MaterialStateProperty.all<Size>(Size(77.0, 0.0)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0))),
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: Colors.white)))),
-            ),
-          ],
+              Text("SLATE",
+                  style: GoogleFonts.jura(
+                      textStyle: TextStyle(color: Colors.white, fontSize: 24))),
+              Padding(
+                padding: const EdgeInsets.only(left: 170.0),
+                child: ElevatedButton(
+                    onPressed: () async{
+                      final preference = await SharedPreferences.getInstance();
+                      preference.clear();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('You have logged out'),
+                        ),
+                      );
+                      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                    },
+                    child: Text("Logout",
+                        style:
+                            GoogleFonts.jura(textStyle: TextStyle(fontSize: 12))),
+                    style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(77.0, 0.0)),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.black),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0))),
+                        side: MaterialStateProperty.all<BorderSide>(
+                            BorderSide(color: Colors.white)))),
+              ),
+            ],
+          ),
         ),
         Column(
           children: [
@@ -227,12 +231,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   itemBuilder: (context, index) {
                     PostModel post = postViewModel.userPosts[index];
+
                     return SingleChildScrollView(
                       child: Column(
                         children: [
                           Container(
                             height: 120,
-                            child: Image.network(post.postImage ?? ""),
+                            child: InkWell(
+                              onTap: () {
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => PostViewScreen(post: post,),));
+                                Navigator.pushNamed(context, PostViewScreen.routeName, arguments: post);
+                              },
+                                child: Image.network(post.postImage ?? "")),
+
                           ),
 
                           SizedBox(height: 3),

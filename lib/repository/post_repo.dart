@@ -63,4 +63,20 @@ class PostRepo {
       throw e;
     }
   }
+
+  Future<PostModel?> fetchPostById(String postId) async {
+    try {
+      DocumentSnapshot<PostModel> snapshot =
+      await postRef.doc(postId).get();
+
+      if (snapshot.exists) {
+        return snapshot.data();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching post by ID: $e");
+      throw e;
+    }
+  }
 }

@@ -1,8 +1,5 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slate/model/UserModel.dart';
 import 'package:slate/post/post_upload.dart';
 import 'package:slate/profile/profile_screen.dart';
-import 'package:slate/service/firebase_service.dart';
 import 'package:slate/view_model/user_view_model.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -89,7 +85,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 children: [
                   Container(color: Colors.red,),
                   Container(color: Colors.green,),
-                  Container(color: Colors.yellowAccent,),
                   ProfileScreen()
                 ],
               ),

@@ -9,8 +9,11 @@ import 'package:slate/service/firebase_service.dart';
 class PostViewModel with ChangeNotifier {
   final PostRepo _postRepo = PostRepo();
   List<PostModel> _userPosts = [];
+  PostModel? _currentPost;
 
   List<PostModel> get userPosts => _userPosts;
+
+  PostModel? get currentPost => _currentPost;
 
   Future<void> uploadPost(String title, String description, File imageFile) async {
     try {
@@ -52,6 +55,16 @@ class PostViewModel with ChangeNotifier {
       }
     } catch (e) {
       print("Error fetching user posts in PostViewModel: $e");
+      throw e;
+    }
+  }
+
+  Future<void> fetchPostById(String postId) async {
+    try {
+      _currentPost = await _postRepo.fetchPostById(postId);
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching post: $e");
       throw e;
     }
   }

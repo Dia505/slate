@@ -86,7 +86,6 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 child: InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, NavigationScreen.routeName);
-                      // Navigator.p(context, ProfileScreen.routeName);
                     },
                     child: Image.asset(
                       "assets/images/back.png",
