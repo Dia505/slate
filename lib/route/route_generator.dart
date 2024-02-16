@@ -10,6 +10,7 @@ import 'package:slate/profile/edit_profile.dart';
 import 'package:slate/splash/splash_screen.dart';
 import 'package:slate/register/register_screen.dart';
 import 'package:slate/profile/profile_screen.dart';
+import 'package:slate/home/home_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -42,6 +43,9 @@ class RouteGenerator {
       case PostViewScreen.routeName:
         var post = settings.arguments as PostModel;
         return MaterialPageRoute(builder: (_) => PostViewScreen(post: post,));
+
+      case HomeScreen.routeName:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
 
       default:
         _onPageNotFound();

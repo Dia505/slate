@@ -239,7 +239,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 120,
                             child: InkWell(
                               onTap: () {
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => PostViewScreen(post: post,),));
                                 Navigator.pushNamed(context, PostViewScreen.routeName, arguments: post);
                               },
                                 child: Image.network(post.postImage ?? "")),

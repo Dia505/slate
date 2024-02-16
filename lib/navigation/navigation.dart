@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slate/home/home_screen.dart';
+import 'package:slate/model/PostModel.dart';
 import 'package:slate/model/UserModel.dart';
 import 'package:slate/post/post_upload.dart';
 import 'package:slate/profile/profile_screen.dart';
@@ -83,7 +85,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   });
                 },
                 children: [
-                  Container(color: Colors.red,),
+                  HomeScreen(),
                   Container(color: Colors.green,),
                   ProfileScreen()
                 ],
@@ -136,8 +138,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 45.0),
-                                    child: Image.asset("assets/images/home.png",
-                                      height: 30.0,),
+                                    child: InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          currentIndex = 0;
+                                        });
+                                        _controller.jumpToPage(currentIndex);
+                                      },
+                                      child: Image.asset("assets/images/home.png",
+                                        height: 30.0,),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 35.0),

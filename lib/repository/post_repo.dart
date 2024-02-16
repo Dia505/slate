@@ -79,4 +79,23 @@ class PostRepo {
       throw e;
     }
   }
+
+  Future<List<PostModel>> fetchAllPosts(String loggedInUserId) async {
+    try {
+      print("Fetching all posts");
+      QuerySnapshot<PostModel> snapshot = await postRef.get();
+
+      List<PostModel> posts = snapshot.docs
+          .map((doc) => doc.data()!)
+          .where((post) => post.userId != loggedInUserId) // Filter out posts of the logged-in user
+          .toList();
+
+      print("Fetched ${posts.length} posts");
+
+      return posts;
+    } catch (e) {
+      print("Error getting all posts: $e");
+      throw e;
+    }
+  }
 }

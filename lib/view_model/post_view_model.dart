@@ -68,4 +68,16 @@ class PostViewModel with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> fetchAllPosts() async {
+    try {
+      User? user = FirebaseService.firebaseAuth.currentUser;
+      _userPosts = await _postRepo.fetchAllPosts(user!.uid);
+      notifyListeners();
+    }
+    catch (e) {
+      print("Error fetching posts: $e");
+      throw e;
+    }
+  }
 }
