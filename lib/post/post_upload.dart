@@ -67,32 +67,35 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
     return Scaffold(
       body: ListView(
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 10.0),
-                child: Image.asset(
-                  "assets/images/slate logo.png",
-                  height: 35,
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 10.0),
+                  child: Image.asset(
+                    "assets/images/slate logo.png",
+                    height: 35,
+                  ),
                 ),
-              ),
 
-              Text("SLATE",
-                  style: GoogleFonts.jura(
-                      textStyle: TextStyle(color: Colors.white, fontSize: 24))),
+                Text("SLATE",
+                    style: GoogleFonts.jura(
+                        textStyle: TextStyle(color: Colors.white, fontSize: 24))),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 200.0),
-                child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, NavigationScreen.routeName);
-                    },
-                    child: Image.asset(
-                      "assets/images/back.png",
-                      height: 30.0,
-                    )),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 200.0),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, NavigationScreen.routeName);
+                      },
+                      child: Image.asset(
+                        "assets/images/back.png",
+                        height: 30.0,
+                      )),
+                )
+              ],
+            ),
           ),
 
           Column(

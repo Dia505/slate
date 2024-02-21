@@ -9,6 +9,7 @@ import 'package:slate/model/PostModel.dart';
 import 'package:slate/model/UserModel.dart';
 import 'package:slate/post/post_upload.dart';
 import 'package:slate/profile/profile_screen.dart';
+import 'package:slate/search/search_screen.dart';
 import 'package:slate/view_model/user_view_model.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 },
                 children: [
                   HomeScreen(),
-                  Container(color: Colors.green,),
+                  SearchScreen(),
                   ProfileScreen()
                 ],
               ),
@@ -151,8 +152,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 35.0),
-                                    child: Image.asset("assets/images/search.png",
-                                      height: 25.0,),
+                                    child: InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          currentIndex = 1;
+                                        });
+                                        _controller.jumpToPage(currentIndex);
+                                      },
+                                      child: Image.asset("assets/images/search.png",
+                                        height: 25.0,),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 33.0),

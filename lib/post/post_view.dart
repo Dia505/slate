@@ -45,42 +45,45 @@ class _PostViewScreenState extends State<PostViewScreen> {
               }
 
               final userData = snapshot.data!;
-              final String profileImageUrl = userData.profileImage ?? "";
+              final String profileImageUrl = userData.profileImage ?? "assets/images/profile.png";
               final String username = userData.username ?? "";
 
               return ListView(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30.0, right: 10.0),
-                          child: Image.asset(
-                            "assets/images/slate logo.png",
-                            height: 35,
-                          ),
-                        ),
-                        Text(
-                          "SLATE",
-                          style: GoogleFonts.jura(
-                            textStyle:
-                            TextStyle(color: Colors.white, fontSize: 24),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 200.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0, right: 10.0),
                             child: Image.asset(
-                              "assets/images/back.png",
-                              height: 30.0,
+                              "assets/images/slate logo.png",
+                              height: 35,
                             ),
                           ),
-                        ),
-                      ],
+                          Text(
+                            "SLATE",
+                            style: GoogleFonts.jura(
+                              textStyle:
+                              TextStyle(color: Colors.white, fontSize: 24),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 200.0),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Image.asset(
+                                "assets/images/back.png",
+                                height: 30.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Column(

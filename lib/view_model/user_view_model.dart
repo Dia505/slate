@@ -10,6 +10,12 @@ import 'package:slate/repository/user_repo.dart';
 class UserViewModel with ChangeNotifier {
   final UserRepo _userRepo = UserRepo();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<UserModel> _searchResults = [];
+  List<UserModel> get searchResults => _searchResults;
+
+  // Define the isLoading property
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   Future<void> saveData(UserModel data) async {
     final response = await _userRepo.saveData(data);
@@ -78,6 +84,17 @@ class UserViewModel with ChangeNotifier {
     } catch (e) {
       print("Error uploading profile image in view model: $e");
       throw e;
+    }
+  }
+
+  Future<UserModel?> fetchUserDataByUsername(String username) async {
+    try {
+      // Call the function from the repository to fetch user data by username
+      UserModel? userData = await _userRepo.getUserByUsername(username);
+      return userData;
+    } catch (e) {
+      print("Error fetching user data by username in view model: $e");
+      return null;
     }
   }
 }

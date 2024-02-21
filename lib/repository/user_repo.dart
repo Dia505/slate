@@ -87,4 +87,27 @@ class UserRepo {
       throw e;
     }
   }
+
+  Future<UserModel?> getUserByUsername(String username) async {
+    try {
+      // Query the 'User' collection for documents where the 'username' field matches the provided username
+      QuerySnapshot<UserModel> querySnapshot = await userRef
+          .where('username', isEqualTo: username)
+          .limit(1) // Limit the query to 1 document (assuming username is unique)
+          .get();
+
+      // Check if any document was found
+      if (querySnapshot.docs.isNotEmpty) {
+        // Convert the first document in the query result to a UserModel object
+        UserModel user = querySnapshot.docs.first.data();
+        return user;
+      } else {
+        // No document found with the provided username
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching user data by username: $e");
+      return null;
+    }
+  }
 }

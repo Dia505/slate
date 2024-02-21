@@ -11,6 +11,8 @@ import 'package:slate/splash/splash_screen.dart';
 import 'package:slate/register/register_screen.dart';
 import 'package:slate/profile/profile_screen.dart';
 import 'package:slate/home/home_screen.dart';
+import 'package:slate/search/search_screen.dart';
+import 'package:slate/profile/user_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -46,6 +48,12 @@ class RouteGenerator {
 
       case HomeScreen.routeName:
         return MaterialPageRoute(builder: (_) => HomeScreen());
+
+      case SearchScreen.routeName:
+        return MaterialPageRoute(builder: (_) => SearchScreen());
+
+      case UserScreen.routeName:
+        return MaterialPageRoute(builder: (_) => UserScreen());
 
       default:
         _onPageNotFound();
