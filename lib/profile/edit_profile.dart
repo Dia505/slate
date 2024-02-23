@@ -55,7 +55,7 @@ class _EditProfileState extends State<EditProfile> {
 
           _nameController.text = _user?.fullname ?? "";
           _userNameController.text = _user?.username ?? "";
-          _bioController.text = _user?.about ?? "";
+          _bioController.text = _user?.bio ?? "";
         });
       }
     }

@@ -45,7 +45,6 @@ class _PostViewScreenState extends State<PostViewScreen> {
               }
 
               final userData = snapshot.data!;
-              final String profileImageUrl = userData.profileImage ?? "assets/images/profile.png";
               final String username = userData.username ?? "";
 
               return ListView(
@@ -97,7 +96,9 @@ class _PostViewScreenState extends State<PostViewScreen> {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundImage: NetworkImage(profileImageUrl),
+                              backgroundImage: userData.profileImage != null
+                              ? NetworkImage(userData.profileImage!)
+                              : AssetImage("assets/images/profile.png") as ImageProvider,
                               radius: 20,
                             ),
                             Padding(
@@ -109,27 +110,30 @@ class _PostViewScreenState extends State<PostViewScreen> {
                           ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start ,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15, right: 0),
-                            child: Text(widget.post.title,
-                                style:
-                                TextStyle(color: Colors.white, fontSize: 24)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 13, left: 50),
-                            child: Container(
-                              width: 300,
-                              child: Text(
-                                widget.post.description ?? "n/a",
-                                style: TextStyle(color: Colors.white, fontSize: 18),
+                      Container(
+                        width: 280,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start ,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15, right: 0),
+                              child: Text(widget.post.title,
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 24)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13),
+                              child: Container(
+                                width: 300,
+                                child: Text(
+                                  widget.post.description ?? "n/a",
+                                  style: TextStyle(color: Colors.white, fontSize: 18),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

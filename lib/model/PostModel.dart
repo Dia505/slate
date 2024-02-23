@@ -21,7 +21,7 @@ class PostModel {
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-    postImage: json["postImage"],
+    postImage: json["postImage"] ?? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
     title: json["title"],
     description: json["description"],
     userId: json["userId"],

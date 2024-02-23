@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,8 +11,8 @@ import 'package:slate/repository/user_repo.dart';
 class UserViewModel with ChangeNotifier {
   final UserRepo _userRepo = UserRepo();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<UserModel> _searchResults = [];
-  List<UserModel> get searchResults => _searchResults;
+  UserModel?  _searchResults =  UserModel();
+  UserModel? get searchResults => _searchResults;
 
   // Define the isLoading property
   bool _isLoading = false;
@@ -39,12 +40,11 @@ class UserViewModel with ChangeNotifier {
   // }
 
   Future<String?> loginUser(UserModel data) async {
-
     SharedPreferences preferences = await SharedPreferences.getInstance();
     try {
-      String? userId = await UserRepo().loginUser(data.email, data.password);
+      String? userId = await UserRepo().loginUser(data.email ?? "", data.password ?? "");
       if (userId != null) {
-        preferences.setString("userId",userId);
+        preferences.setString("userId", userId);
         notifyListeners();
       }
       return userId;
@@ -57,10 +57,11 @@ class UserViewModel with ChangeNotifier {
   Future<UserModel?> fetchUserDataById(String userId) async {
     try {
       DocumentSnapshot userSnapshot =
-      await _firestore.collection("User").doc(userId).get();
+          await _firestore.collection("User").doc(userId).get();
 
       if (userSnapshot.exists) {
-        Map<String, dynamic> userData = (userSnapshot.data() as Map<String, dynamic>?) ?? {};
+        Map<String, dynamic> userData =
+            (userSnapshot.data() as Map<String, dynamic>?) ?? {};
         return UserModel.fromJson(userData);
       } else {
         return null;
@@ -87,14 +88,22 @@ class UserViewModel with ChangeNotifier {
     }
   }
 
-  Future<UserModel?> fetchUserDataByUsername(String username) async {
+  Future<void> fetchUserDataByUsername(String username) async {
+    _isLoading = true;
+    notifyListeners();
     try {
       // Call the function from the repository to fetch user data by username
-      UserModel? userData = await _userRepo.getUserByUsername(username);
-      return userData;
-    } catch (e) {
+      UserModel ? userData = await _userRepo.getUserByUsername(username);
+      _searchResults = userData!;
+    }
+    catch (e) {
       print("Error fetching user data by username in view model: $e");
-      return null;
+      _searchResults = null;
+    }
+    finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
+
 }

@@ -47,6 +47,8 @@ class PostViewModel with ChangeNotifier {
 
       if (user != null) {
         _userPosts = await _postRepo.fetchPostsByUserId(user.uid);
+        print(_userPosts.length);
+        print("//////");
         print("User Posts: $_userPosts");
         notifyListeners();
       }
@@ -73,6 +75,8 @@ class PostViewModel with ChangeNotifier {
     try {
       User? user = FirebaseService.firebaseAuth.currentUser;
       _userPosts = await _postRepo.fetchAllPosts(user!.uid);
+      print(_userPosts.length);
+      print("//////");
       notifyListeners();
     }
     catch (e) {

@@ -19,7 +19,7 @@ class UserRepo {
     try {
       UserCredential userCredential = await FirebaseService.firebaseAuth
           .createUserWithEmailAndPassword(
-          email: data.email, password: data.password);
+          email: data.email ?? "", password: data.password ?? "");
       // data.userId = userCredential.user!.uid;
       await userRef.doc(userCredential.user!.uid).set(data);
     }
@@ -101,7 +101,8 @@ class UserRepo {
         // Convert the first document in the query result to a UserModel object
         UserModel user = querySnapshot.docs.first.data();
         return user;
-      } else {
+      }
+      else {
         // No document found with the provided username
         return null;
       }

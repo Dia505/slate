@@ -116,7 +116,7 @@ class _UserScreenState extends State<UserScreen> {
                           padding: const EdgeInsets.only(top: 10.0),
                           child: Container(
                               width: 250,
-                              child: Text(user.about ?? "",
+                              child: Text(user.bio ?? "",
                                   style: GoogleFonts.inter(
                                       textStyle: TextStyle(
                                           color: Colors.white, fontSize: 14)),

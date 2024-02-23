@@ -11,48 +11,46 @@ UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
-  String email;
-  String ? fullname;
-  String ? about;
-  String password;
-  String ? username;
-  String ? profileImage;
+  String? email;
+  String? fullname;
+  String? password;
+  String? username;
+  String? bio;
+  String? profileImage;
 
-
-  UserModel({
-    required this.email,
-    this.about,
-    this.fullname,
-    required this.password,
-    this.username,
-    this.profileImage
-  });
-
+  UserModel(
+      {this.email,
+      this.fullname,
+      this.bio,
+      this.password,
+      this.username,
+      this.profileImage});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    email: json["email"],
-    fullname: json["fullname"],
-    password: json["password"],
-    about: json["bio"] ?? null,
-    username: json["username"],
-      profileImage: json["image"]
-  );
+      email: json["email"],
+      fullname: json["fullname"],
+      password: json["password"],
+      bio: json["bio"] ?? null,
+      username: json["username"],
+      profileImage: json["image"]);
 
   Map<String, dynamic> toJson() => {
-    "email": email,
-    "fullname": fullname,
-    "about": about ?? null,
-    "password": password,
-    "username": username,
-    "image": profileImage
-  };
+        "email": email,
+        "fullname": fullname,
+        "password": password,
+        "bio": bio,
+        "username": username,
+        "image": profileImage
+      };
 
-  factory UserModel.fromFirebaseSnapshot(DocumentSnapshot<Map<String, dynamic>> json) => UserModel(
-    fullname: json["name"],
-    username: json["username"],
-    about: json["about"],
-    profileImage: json["image"],
-    email: json["email"],
-    password: json["password"],
-  );
+  factory UserModel.fromFirebaseSnapshot(
+          DocumentSnapshot<Map<String, dynamic>> json) =>
+      UserModel(
+        fullname: json["fullname"],
+        username: json["username"],
+        bio: json["bio"],
+        profileImage: json["image"],
+        email: json["email"],
+        password: json["password"],
+      );
 }

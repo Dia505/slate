@@ -49,7 +49,6 @@ class PostRepo {
       print("Fetching posts for userId: $userId");
       QuerySnapshot<PostModel> snapshot = await postRef
           .where('userId', isEqualTo: userId)
-          .orderBy('timestamp', descending: true)
           .get();
 
       print("Fetched ${snapshot.size} posts");
