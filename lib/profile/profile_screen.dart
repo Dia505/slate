@@ -228,6 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 0,
                     mainAxisSpacing: 20,
+                    childAspectRatio: 0.8
                   ),
                   itemBuilder: (context, index) {
                     PostModel post = postViewModel.userPosts[index];
@@ -250,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(right: 15.0),
                             child: Container(
-                              width: 70,
+                              width: 90,
                               child: Text(
                                 post.title ?? "",
                                 style: TextStyle(color: Colors.white),
