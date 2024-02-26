@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slate/firebase_options.dart';
-import 'package:slate/post/post_upload.dart';
-import 'package:slate/profile/profile_screen.dart';
 import 'package:slate/route/route_generator.dart';
 import 'package:slate/splash/splash_screen.dart';
 import 'package:slate/view_model/post_view_model.dart';
@@ -39,10 +37,3 @@ class MyApp extends StatelessWidget {
 }
 
 
-/// model repo
-///
-/// viewmodel ma
-/// List<String> tempVariable = <String>[];
-///
-///
-///
